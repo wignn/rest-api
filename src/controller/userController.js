@@ -11,6 +11,21 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
+
+export const getUserById = async (req, res) => {
+    const {id} = req.params
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: parseInt(id, 10)
+            }
+        })
+        res.json(user)
+    }catch(error){
+        res.status(500).json({ error: "An error occurred while fetching user." });
+    }
+}
+
 export const createUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
