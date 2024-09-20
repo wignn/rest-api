@@ -4,8 +4,8 @@ import * as v from "valibot";
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
-    res.json(users);
+    const result = await prisma.user.findMany();
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error: "An error occurred while fetching users." });
   }
@@ -14,12 +14,12 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await prisma.user.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
         id: parseInt(id, 10),
       },
     });
-    res.json(user);
+    res.json(result);
   } catch (error) {
     res.status(500).json({ error: "An error occurred while fetching user." });
   }
@@ -27,15 +27,17 @@ export const getUserById = async (req, res) => {
 
 export const getUserByName = async (req, res) => {
   try {
-       const { name } = req.params; 
+    const { name } = req.params;
 
-    const user = await prisma.user.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
         name: name,
-      }
-    })
+      },
+    });
+    res.json(result)
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching user." });
   }
-
 };
 
 export const createUser = async (req, res) => {
@@ -64,7 +66,7 @@ export const createUser = async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await prisma.user.create({
+    const result = await prisma.user.create({
       data: {
         name: name,
         email: email,
@@ -72,7 +74,7 @@ export const createUser = async (req, res) => {
       },
     });
 
-    res.json(user);
+    res.json(result);
   } catch (error) {
     res
       .status(500)
