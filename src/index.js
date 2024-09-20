@@ -7,8 +7,8 @@ import {MainRoute, userRoute} from './routes/route.js';
 const app = express();
 
 
-app.use('/', MainRoute);
-app.use('/', userRoute)
+app.use('/test', MainRoute);
+app.use('/users', userRoute)
 
 app.listen(port, () => {
     console.log(`server is running on port `.blue + ` http://localhost:${port}/ `.green);
